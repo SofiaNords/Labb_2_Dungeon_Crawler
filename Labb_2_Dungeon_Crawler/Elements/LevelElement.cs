@@ -6,4 +6,8 @@
     public char ClassChar { get; set; }
     public ConsoleColor Color { get; set; }
 
+    public void Draw()
+    {
+
+    }
 }
