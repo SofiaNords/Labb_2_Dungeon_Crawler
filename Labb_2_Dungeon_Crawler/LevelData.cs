@@ -5,6 +5,5 @@
     public List<LevelElement> Elements
     {
         get { return _elements; }
-        private set { _elements = value; }
     }
 }
