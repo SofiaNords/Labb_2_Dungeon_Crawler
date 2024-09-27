@@ -1,4 +1,6 @@
-﻿public class LevelData
+﻿using System.Threading.Channels;
+
+public class LevelData
 {
     private List<LevelElement> _elements;
 
@@ -40,6 +42,9 @@
                             break;
                         case 's':
                             element = new Snake(positionX, positionY);
+                            break;
+                        case '@':
+                            element = new Player(positionX, positionY);
                             break;
                         default:
                             element = null;
