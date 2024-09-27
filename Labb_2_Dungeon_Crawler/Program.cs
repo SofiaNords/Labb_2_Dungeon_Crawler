@@ -1,3 +1,3 @@
 ﻿LevelData levelData = new LevelData();
 
-levelData.Load();
+levelData.Load("Level1.txt");

@@ -7,9 +7,9 @@
         get { return _elements; }
     }
 
-    public void Load()
+    public void Load(string filename)
     {
-        string filePath = Path.Combine("Levels", "Level1.txt");
+        string filePath = Path.Combine("Levels", filename);
 
         try
         {
