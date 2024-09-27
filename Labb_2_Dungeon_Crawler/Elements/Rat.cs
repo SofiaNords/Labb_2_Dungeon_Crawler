@@ -1,6 +1,6 @@
 ﻿public class Rat : Enemy
 {
-    public void RatElement()
+    public Rat()
     {
         ClassChar = 'r';
         Color = ConsoleColor.Red;
