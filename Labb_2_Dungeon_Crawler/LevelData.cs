@@ -25,17 +25,27 @@
                 {
                     char c = (char)character;
 
-                    LevelElement element = c switch
+                    LevelElement element = null;
+
+                    switch (c)
                     {
-                        '#' => new WallElement(),
-                        'r' => new RatElement(),
-                        's' => new SnakeElement(),
-                        _ => null
+                        case '#':
+                            element = new Wall();
+                            break;
+                        case 'r':
+                            element = new Rat();
+                            break;
+                        case 's':
+                            element = new Snake();
+                            break;
+                        default:
+                            element = null;
+                            break;
                     };
 
                     if (element != null)
                     {
-                        _elements.Add(element);
+                        _elements.Add(element); 
                     }
                 }
             }
