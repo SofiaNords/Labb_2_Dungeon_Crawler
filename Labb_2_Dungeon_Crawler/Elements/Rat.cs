@@ -1,8 +1,10 @@
 ﻿public class Rat : Enemy
 {
-    public Rat()
+    public Rat(int x, int y)
     {
         ClassChar = 'r';
         Color = ConsoleColor.Red;
+        PositionX = x;
+        PositionY = y;
     }
 }
