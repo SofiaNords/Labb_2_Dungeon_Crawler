@@ -1,4 +1,4 @@
-﻿public class Enemy : LevelElement
+﻿public abstract class Enemy : LevelElement
 {
 
 }
