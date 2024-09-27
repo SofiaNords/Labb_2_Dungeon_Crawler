@@ -1,6 +1,6 @@
 ﻿public class Wall: LevelElement 
 {
-    public void WallElement()
+    public Wall()
     {
         ClassChar = '#';
         Color = ConsoleColor.Gray;
