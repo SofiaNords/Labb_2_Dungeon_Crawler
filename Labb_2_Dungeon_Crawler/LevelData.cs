@@ -7,6 +7,11 @@
         get { return _elements; }
     }
 
+    public LevelData()
+    {
+        _elements = new List<LevelElement>();
+    }
+
     public void Load(string filename)
     {
         string filePath = Path.Combine("Levels", filename);
@@ -15,9 +20,23 @@
         {
             using (StreamReader reader = new StreamReader(filePath))
             {
-                while (!reader.EndOfStream)
+                int character;
+                while ((character = reader.Read()) != -1)
                 {
-                    Console.WriteLine(reader.ReadLine());
+                    char c = (char)character;
+
+                    LevelElement element = c switch
+                    {
+                        '#' => new WallElement(),
+                        'r' => new RatElement(),
+                        's' => new SnakeElement(),
+                        _ => null
+                    };
+
+                    if (element != null)
+                    {
+                        _elements.Add(element);
+                    }
                 }
             }
         }
