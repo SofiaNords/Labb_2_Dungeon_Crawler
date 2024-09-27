@@ -21,6 +21,9 @@
             using (StreamReader reader = new StreamReader(filePath))
             {
                 int character;
+                int positionX = 0;
+                int positionY = 0;
+
                 while ((character = reader.Read()) != -1)
                 {
                     char c = (char)character;
@@ -30,13 +33,13 @@
                     switch (c)
                     {
                         case '#':
-                            element = new Wall();
+                            element = new Wall(positionX, positionY);
                             break;
                         case 'r':
-                            element = new Rat();
+                            element = new Rat(positionX, positionY);
                             break;
                         case 's':
-                            element = new Snake();
+                            element = new Snake(positionX, positionY);
                             break;
                         default:
                             element = null;
@@ -46,6 +49,14 @@
                     if (element != null)
                     {
                         _elements.Add(element); 
+                    }
+
+                    positionX++;
+
+                    if (c == '\n')
+                    {
+                        positionY++;
+                        positionX = 0;
                     }
                 }
             }
