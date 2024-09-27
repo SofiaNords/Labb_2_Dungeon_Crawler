@@ -1,8 +1,10 @@
 ﻿public class Snake : Enemy
 {
-    public Snake()
+    public Snake(int x, int y)
     {
         ClassChar = 's';
         Color = ConsoleColor.Green;
+        PositionX = x;
+        PositionY = y;
     }
 }
