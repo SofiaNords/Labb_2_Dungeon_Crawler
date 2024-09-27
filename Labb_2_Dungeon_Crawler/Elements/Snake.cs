@@ -1,6 +1,6 @@
 ﻿public class Snake : Enemy
 {
-    public void SnakeElement()
+    public Snake()
     {
         ClassChar = 's';
         Color = ConsoleColor.Green;
