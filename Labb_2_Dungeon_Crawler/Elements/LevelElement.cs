@@ -11,5 +11,6 @@
         Console.ForegroundColor = Color;
         Console.SetCursorPosition(PositionX, PositionY);
         Console.Write(ClassChar);
+        Console.ResetColor();
     }
 }
