@@ -8,6 +8,8 @@
 
     public void Draw()
     {
-
+        Console.ForegroundColor = Color;
+        Console.SetCursorPosition(PositionX, PositionY);
+        Console.Write(ClassChar);
     }
 }
