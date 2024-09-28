@@ -7,4 +7,9 @@
         PositionX = x;
         PositionY = y;
     }
+
+    public override void Update()
+    {
+        throw new NotImplementedException();
+    }
 }
