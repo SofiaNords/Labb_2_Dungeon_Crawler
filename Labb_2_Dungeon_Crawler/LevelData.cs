@@ -1,4 +1,4 @@
-﻿using System.Threading.Channels;
+﻿
 
 public class LevelData
 {
@@ -14,9 +14,9 @@ public class LevelData
         _elements = new List<LevelElement>();
     }
 
-    public void Load(string filename)
+    public void Load(string fileName)
     {
-        string filePath = Path.Combine("Levels", filename);
+        string filePath = Path.Combine("Levels", fileName);
 
         try
         {
