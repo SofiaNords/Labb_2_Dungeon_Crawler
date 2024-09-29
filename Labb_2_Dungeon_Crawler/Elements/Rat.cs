@@ -6,6 +6,8 @@
         Color = ConsoleColor.Red;
         PositionX = x;
         PositionY = y;
+        Name = "Rat";
+        HP = 10;
     }
 
     public override void Update()
