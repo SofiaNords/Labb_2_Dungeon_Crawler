@@ -42,9 +42,17 @@ public class GameLoop
                 player.PositionX = newX;
                 player.PositionY = newY;
 
+                DrawLevel();
             }
         }
     }
 
-
+    private void DrawLevel()
+    {
+        Console.Clear();
+        foreach (LevelElement element in _levelData.Elements)
+        {
+            element.Draw();
+        }
+    }
 }
