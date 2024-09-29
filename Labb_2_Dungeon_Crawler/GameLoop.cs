@@ -39,12 +39,27 @@ public class GameLoop
                         break;
                 }
 
-                player.PositionX = newX;
-                player.PositionY = newY;
+                if (IsValidMove(newX, newY))
+                {
+                    player.PositionX = newX;
+                    player.PositionY = newY;
+                }
 
                 DrawLevel();
             }
         }
+    }
+
+    private bool IsValidMove(int x, int y)
+    {
+        foreach (var element in _levelData.Elements)
+        {
+            if (element.PositionX == x && element.PositionY == y && element is Wall)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void DrawLevel()
