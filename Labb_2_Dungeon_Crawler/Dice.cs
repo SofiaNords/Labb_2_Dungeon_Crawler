@@ -14,16 +14,16 @@
     public int Throw()
     {
         Random random = new Random();
-        int total = 0;
+        int score = 0;
 
         for (int i = 0; i < _numberOfDice; i++)
         {
-            total += random.Next(1, _sidesPerDice + 1);
+            score += random.Next(1, _sidesPerDice + 1);
         }
 
-        total += _modifier;
+        score += _modifier;
 
-        return total;
+        return score;
     }
 
     public override string ToString()
