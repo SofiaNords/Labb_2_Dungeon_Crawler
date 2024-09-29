@@ -51,7 +51,7 @@
     {
         foreach (var element in _levelData.Elements)
         {
-            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Rat || element is Snake))
+            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Enemy))
             {
                 return false;
             }
