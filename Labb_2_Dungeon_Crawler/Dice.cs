@@ -25,4 +25,9 @@
 
         return total;
     }
+
+    public override string ToString()
+    {
+        return $"{_numberOfDice}d{_sidesPerDice}+{_modifier}";
+    }
 }
