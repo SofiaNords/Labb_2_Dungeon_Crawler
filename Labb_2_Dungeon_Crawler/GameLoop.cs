@@ -1,7 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-
-public class GameLoop
+﻿public class GameLoop
 {
     private LevelData _levelData;
 
@@ -54,7 +51,7 @@ public class GameLoop
     {
         foreach (var element in _levelData.Elements)
         {
-            if (element.PositionX == x && element.PositionY == y && element is Wall)
+            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Rat || element is Snake))
             {
                 return false;
             }
