@@ -7,4 +7,8 @@
         _levelData = levelData;
     }
 
+    public void Run()
+    {
+        Player player = _levelData.StartPlayer;
+    }
 }
