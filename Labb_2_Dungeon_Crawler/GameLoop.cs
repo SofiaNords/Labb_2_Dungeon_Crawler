@@ -1,5 +1,4 @@
-﻿using System.Data;
-
+﻿
 public class GameLoop
 {
     private LevelData _levelData;
@@ -46,9 +45,9 @@ public class GameLoop
 
                 foreach (var element in _levelData.Elements)
                 {
-                    if (element is Rat rat)
+                    if (element is Enemy enemy)
                     {
-                        rat.Update();
+                        enemy.Update();
                     }
                 }
 
