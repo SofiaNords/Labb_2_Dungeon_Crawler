@@ -32,6 +32,7 @@
                 int character;
                 int positionX = 0; // Tracks the horizontal position in the level
                 int positionY = 0; // Tracks the vertical position in the level
+                bool playerCreated = false;
 
                 // Read characters from the file until the end is reached
                 while ((character = reader.Read()) != -1)
@@ -50,11 +51,15 @@
                             element = new Rat(positionX, positionY, this); // Create a rat element
                             break;
                         case 's':
-                            element = new Snake(positionX, positionY); // Create a snake element
+                            if (playerCreated)
+                            {
+                                element = new Snake(positionX, positionY, this, StartPlayer); // Create a snake element
+                            }
                             break;
                         case '@':
                             element = new Player(positionX, positionY); // Create a player element
                             StartPlayer = (Player)element; // Set the starting player
+                            playerCreated = true;
                             break;
                         default:
                             element = null; // Ignore unrecognized characters
