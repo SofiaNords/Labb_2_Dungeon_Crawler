@@ -1,6 +1,7 @@
 ﻿public class Snake : Enemy
 {
-    public Snake(int x, int y)
+    private Player _player;
+    public Snake(int x, int y, Player player)
     {
         ClassChar = 's';
         Color = ConsoleColor.Green;
@@ -8,10 +9,11 @@
         PositionY = y;
         Name = "Snake";
         HP = 25;
+        _player = player;
     }
 
     public override void Update()
     {
-        throw new NotImplementedException();
+       
     }
 }
