@@ -1,4 +1,6 @@
-﻿public class GameLoop
+﻿using System.Data;
+
+public class GameLoop
 {
     private LevelData _levelData;
 
@@ -40,6 +42,14 @@
                 {
                     player.PositionX = newX;
                     player.PositionY = newY;
+                }
+
+                foreach (var element in _levelData.Elements)
+                {
+                    if (element is Rat rat)
+                    {
+                        rat.Update();
+                    }
                 }
 
                 DrawLevel();
