@@ -27,12 +27,12 @@ public class Rat : Enemy
 
         Random random = new Random();
 
-        direction = random.Next(1, 4);
+        direction = random.Next(1, 5);
 
         if (direction == up)
         {
             newY--;
-        } 
+        }  
         else if (direction == down)
         {
             newY++;
