@@ -47,7 +47,7 @@
                             element = new Wall(positionX, positionY); // Create a wall element
                             break;
                         case 'r':
-                            element = new Rat(positionX, positionY); // Create a rat element
+                            element = new Rat(positionX, positionY, this); // Create a rat element
                             break;
                         case 's':
                             element = new Snake(positionX, positionY); // Create a snake element
