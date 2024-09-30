@@ -1,8 +1,7 @@
-﻿using System.Numerics;
-
-public class Rat : Enemy
+﻿public class Rat : Enemy
 {
-    public Rat(int x, int y)
+    private LevelData _levelData;
+    public Rat(int x, int y, LevelData levelData)
     {
         ClassChar = 'r';
         Color = ConsoleColor.Red;
@@ -10,9 +9,8 @@ public class Rat : Enemy
         PositionY = y;
         Name = "Rat";
         HP = 10;
+        _levelData = levelData;
     }
-
-    private LevelData _levelData;
 
     public override void Update()
     {
