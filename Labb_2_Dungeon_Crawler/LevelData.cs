@@ -1,10 +1,14 @@
-﻿public class LevelData
+﻿using System.Security.Principal;
+
+public class LevelData
 {
     // List to store the elements that make up the level
     private List<LevelElement> _elements;
 
     // Property to get the starting player of the level
     public Player StartPlayer { get; private set; }
+
+    public Rat Rat { get; set; }
 
     // Public access to the elements list, allowing read-only access while keeping the list itself private
     public List<LevelElement> Elements
@@ -33,8 +37,10 @@
                 int positionX = 0; // Tracks the horizontal position in the level
                 int positionY = 0; // Tracks the vertical position in the level
                 bool playerCreated = false;
-                var attackDice = new Dice(2, 6, 2);
-                var defenceDice = new Dice(2, 6, 0);
+                var playerAttackDice = new Dice(2, 6, 2);
+                var playerDefenceDice = new Dice(2, 6, 0);
+                var ratAttackDice = new Dice(1, 6, 3);
+                var ratDefenceDice = new Dice(1, 6, 1);
 
                 // Read characters from the file until the end is reached
                 while ((character = reader.Read()) != -1)
@@ -50,7 +56,8 @@
                             element = new Wall(positionX, positionY); // Create a wall element
                             break;
                         case 'r':
-                            element = new Rat(positionX, positionY, this); // Create a rat element
+                            element = new Rat(positionX, positionY, this, ratAttackDice, ratDefenceDice); // Create a rat element
+                            Rat = (Rat)element;
                             break;
                         case 's':
                             if (playerCreated)
@@ -59,7 +66,7 @@
                             }
                             break;
                         case '@':
-                            element = new Player(positionX, positionY, attackDice, defenceDice ); // Create a player element
+                            element = new Player(positionX, positionY, playerAttackDice, playerDefenceDice ); // Create a player element
                             StartPlayer = (Player)element; // Set the starting player
                             playerCreated = true;
                             break;
