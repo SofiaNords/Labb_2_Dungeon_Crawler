@@ -1,7 +1,7 @@
 ﻿public class Rat : Enemy
 {
     private LevelData _levelData;
-    public Rat(int x, int y, LevelData levelData)
+    public Rat(int x, int y, LevelData levelData, Dice attackDice, Dice defenceDice)
     {
         ClassChar = 'r';
         Color = ConsoleColor.Red;
@@ -10,6 +10,9 @@
         Name = "Rat";
         HP = 10;
         _levelData = levelData;
+
+        AttackDice = attackDice;
+        DefenceDice = defenceDice;
     }
 
     public override void Update()
@@ -62,4 +65,12 @@
         }
         return true;
     }
+
+    public int Defence()
+    {
+        int defenceScore = DefenceDice.Throw();
+
+        return defenceScore;
+    }
+
 }
