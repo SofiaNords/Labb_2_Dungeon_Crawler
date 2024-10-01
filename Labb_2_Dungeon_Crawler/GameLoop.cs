@@ -11,6 +11,7 @@ public class GameLoop
     public void Run()
     {
         Player player = _levelData.StartPlayer;
+        Rat rat = _levelData.Rat;
 
         while (true)
         {
@@ -40,6 +41,7 @@ public class GameLoop
                 if (IsAttackMove(newX, newY))
                 {
                     player.AttackEnemy();
+                    rat.Defence();
                 }
 
                 if (IsValidMove(newX, newY))
