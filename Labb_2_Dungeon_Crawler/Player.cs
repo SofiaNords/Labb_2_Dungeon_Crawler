@@ -18,4 +18,12 @@
         DefenceDice = defenceDice;
     }
 
+    public int AttackEnemy()
+    {
+        int attackScore = AttackDice.Throw();
+
+        return attackScore;
+    }
+
+
 }
