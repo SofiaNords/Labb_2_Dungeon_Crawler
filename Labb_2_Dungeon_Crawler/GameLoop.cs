@@ -37,6 +37,11 @@ public class GameLoop
                         break;
                 }
 
+                if (IsAttackMove(newX, newY))
+                {
+                    player.AttackEnemy();
+                }
+
                 if (IsValidMove(newX, newY))
                 {
                     player.PositionX = newX;
@@ -66,6 +71,18 @@ public class GameLoop
             }
         }
         return true;
+    }
+
+    private bool IsAttackMove(int x, int y)
+    {
+        foreach (var element in _levelData.Elements)
+        {
+            if (element.PositionX == x && element.PositionY == y && (element is Enemy))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void DrawLevel()
