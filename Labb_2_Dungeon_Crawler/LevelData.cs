@@ -33,6 +33,8 @@
                 int positionX = 0; // Tracks the horizontal position in the level
                 int positionY = 0; // Tracks the vertical position in the level
                 bool playerCreated = false;
+                var attackDice = new Dice(2, 6, 2);
+                var defenceDice = new Dice(2, 6, 0);
 
                 // Read characters from the file until the end is reached
                 while ((character = reader.Read()) != -1)
@@ -57,7 +59,7 @@
                             }
                             break;
                         case '@':
-                            element = new Player(positionX, positionY); // Create a player element
+                            element = new Player(positionX, positionY, attackDice, defenceDice ); // Create a player element
                             StartPlayer = (Player)element; // Set the starting player
                             playerCreated = true;
                             break;
