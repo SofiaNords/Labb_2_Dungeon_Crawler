@@ -1,7 +1,7 @@
 ﻿public class Rat : Enemy
 {
     private LevelData _levelData;
-    public Rat(int x, int y, LevelData levelData, Dice attackDice, Dice defenceDice)
+    public Rat(int x, int y, LevelData levelData) // tabort dice parametrar
     {
         ClassChar = 'r';
         Color = ConsoleColor.Red;
@@ -11,16 +11,17 @@
         HP = 10;
         _levelData = levelData;
 
-        AttackDice = attackDice;
-        DefenceDice = defenceDice;
+        AttackDice = new Dice(1, 6, 3);
+        DefenceDice = new Dice(1, 6, 1);
     }
 
-    public override void Update()
+    public override void Update(Player player)
     {
         int direction;
         int newX = this.PositionX;
         int newY = this.PositionY;
 
+        // kan göras med en enum
         int up = 1;
         int down = 2;
         int left = 3;
@@ -52,6 +53,8 @@
             this.PositionX = newX;
             this.PositionY = newY;
         }
+
+        
     }
 
     private bool IsValidMove(int x, int y)
@@ -66,7 +69,7 @@
         return true;
     }
 
-    public int Defence()
+    public int Defence() // denna behövs ej
     {
         int defenceScore = DefenceDice.Throw();
 
