@@ -1,7 +1,9 @@
-﻿public class Rat : Enemy
+﻿using System.Security.Cryptography.X509Certificates;
+
+public class Rat : Enemy
 {
     private LevelData _levelData;
-    public Rat(int x, int y, LevelData levelData) // tabort dice parametrar
+    public Rat(int x, int y, LevelData levelData)
     {
         ClassChar = 'r';
         Color = ConsoleColor.Red;
@@ -15,35 +17,36 @@
         DefenceDice = new Dice(1, 6, 1);
     }
 
+    public enum Direction
+    {
+        up,
+        down,
+        left,
+        right,
+    }
     public override void Update(Player player)
     {
         int direction;
         int newX = this.PositionX;
         int newY = this.PositionY;
 
-        // kan göras med en enum
-        int up = 1;
-        int down = 2;
-        int left = 3;
-        int right = 4;
-
         Random random = new Random();
 
-        direction = random.Next(1, 5);
+        direction = random.Next(0, 4);
 
-        if (direction == up)
+        if (direction == (int)Direction.up)
         {
             newY--;
         }  
-        else if (direction == down)
+        else if (direction == (int)Direction.down)
         {
             newY++;
         }
-        else if (direction == left)
+        else if (direction == (int)Direction.left)
         {
             newX--;
         }
-        else if (direction == right)
+        else if (direction == (int)Direction.right)
         {
             newX++;
         }
