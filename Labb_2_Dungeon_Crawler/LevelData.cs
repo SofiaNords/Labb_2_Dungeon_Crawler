@@ -5,7 +5,7 @@ public class LevelData
     // List to store the elements that make up the level
     private List<LevelElement> _elements;
 
-    // Property to get the starting player of the level
+    // Property to get the starting player of the level, Borde vara en Position PlayerStartPosition
     public Player StartPlayer { get; private set; }
 
     public Rat Rat { get; set; }
@@ -17,7 +17,7 @@ public class LevelData
     }
 
     // Constructor to initialize the level elements list
-    public LevelData()
+    public LevelData()  
     {
         _elements = new List<LevelElement>();
     }
@@ -37,10 +37,6 @@ public class LevelData
                 int positionX = 0; // Tracks the horizontal position in the level
                 int positionY = 0; // Tracks the vertical position in the level
                 bool playerCreated = false;
-                var playerAttackDice = new Dice(2, 6, 2);
-                var playerDefenceDice = new Dice(2, 6, 0);
-                var ratAttackDice = new Dice(1, 6, 3);
-                var ratDefenceDice = new Dice(1, 6, 1);
 
                 // Read characters from the file until the end is reached
                 while ((character = reader.Read()) != -1)
@@ -56,17 +52,14 @@ public class LevelData
                             element = new Wall(positionX, positionY); // Create a wall element
                             break;
                         case 'r':
-                            element = new Rat(positionX, positionY, this, ratAttackDice, ratDefenceDice); // Create a rat element
+                            element = new Rat(positionX, positionY, this); // Create a rat element
                             Rat = (Rat)element;
                             break;
                         case 's':
-                            if (playerCreated)
-                            {
-                                element = new Snake(positionX, positionY, this, StartPlayer); // Create a snake element
-                            }
+                            element = new Snake(positionX, positionY, this); // Create a snake element
                             break;
                         case '@':
-                            element = new Player(positionX, positionY, playerAttackDice, playerDefenceDice ); // Create a player element
+                            element = new Player(positionX, positionY); // Create a player element
                             StartPlayer = (Player)element; // Set the starting player
                             playerCreated = true;
                             break;
