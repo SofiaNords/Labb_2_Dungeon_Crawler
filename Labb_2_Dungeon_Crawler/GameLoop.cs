@@ -2,6 +2,7 @@
 public class GameLoop
 {
     private LevelData _levelData;
+    private Dictionary<LevelElement, (int, int)> _previousPositions = new Dictionary<LevelElement, (int, int)>();
 
     public GameLoop(LevelData levelData)
     {
@@ -12,6 +13,13 @@ public class GameLoop
     {
         Player player = _levelData.StartPlayer;
         Rat rat = _levelData.Rat;
+        int turn = 0;
+
+        Console.CursorVisible = false;
+
+        InitializeElementPositions();
+
+        //Console.WriteLine($"Name: {player.Name} - Health: {player.HP} - Turn: {turn}");
 
         while (true)
         {
@@ -40,9 +48,23 @@ public class GameLoop
 
                 if (IsAttackMove(newX, newY))
                 {
-                    player.AttackEnemy();
-                    rat.Defence();
+                    //int playerAttackPoints = player.AttackEnemy();
+                    int playerAttackPoints = player.AttackDice.Throw();
+                    //int ratDefencePoints = rat.Defence(); 
+                    int ratDefencePoints = rat.DefenceDice.Throw();
+
+                    int attackScore = playerAttackPoints - ratDefencePoints;
+
+                    if (attackScore > 0)
+                    {
+                        rat.HP = rat.HP - attackScore;
+                    }
+                    else if (attackScore < 0)
+                    {
+                        player.HP = player.HP + attackScore;
+                    }
                 }
+                UpdateElementPositions();
 
                 if (IsValidMove(newX, newY))
                 {
@@ -54,11 +76,31 @@ public class GameLoop
                 {
                     if (element is Enemy enemy)
                     {
-                        enemy.Update();
+                        enemy.Update(player);
                     }
                 }
-
+                turn++;
                 DrawLevel();
+            }
+        }
+    }
+
+    private void InitializeElementPositions()
+    {
+        foreach(var element in _levelData.Elements)
+        {
+            _previousPositions[element] = (element.PositionX, element.PositionY);
+        }
+    }
+
+    private void UpdateElementPositions()
+    {
+        foreach(var element in _levelData.Elements)
+        {
+            var previousPos = _previousPositions[element];
+            if (element.PositionX != previousPos.Item1 || element.PositionY != previousPos.Item2)
+            {
+                _previousPositions[element] = (element.PositionX, element.PositionY);
             }
         }
     }
@@ -89,10 +131,17 @@ public class GameLoop
 
     private void DrawLevel()
     {
-        Console.Clear();
         foreach (LevelElement element in _levelData.Elements)
         {
-            element.Draw();
+            var previousPos = _previousPositions[element];
+            if (element.PositionX != previousPos.Item1 || element.PositionY != previousPos.Item2)
+            {
+                Console.SetCursorPosition(previousPos.Item1, previousPos.Item2);
+                Console.Write(" ");
+
+                Console.SetCursorPosition(element.PositionX, element.PositionY);
+                element.Draw();
+            }
         }
     }
 }
