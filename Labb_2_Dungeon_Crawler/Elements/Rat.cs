@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-public class Rat : Enemy
+﻿public class Rat : Enemy
 {
     private LevelData _levelData;
     public Rat(int x, int y, LevelData levelData)
@@ -12,7 +10,6 @@ public class Rat : Enemy
         Name = "Rat";
         HP = 10;
         _levelData = levelData;
-
         AttackDice = new Dice(1, 6, 3);
         DefenceDice = new Dice(1, 6, 1);
     }
@@ -24,6 +21,7 @@ public class Rat : Enemy
         left,
         right,
     }
+
     public override void Update(Player player)
     {
         int direction;
@@ -51,32 +49,10 @@ public class Rat : Enemy
             newX++;
         }
 
-        if (IsValidMove(newX, newY))
+        if (player.IsValidMove(newX, newY, _levelData))
         {
             this.PositionX = newX;
             this.PositionY = newY;
-        }
-
-        
+        }    
     }
-
-    private bool IsValidMove(int x, int y)
-    {
-        foreach (var element in _levelData.Elements)
-        {
-            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Enemy || element is Player))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public int Defence() // denna behövs ej
-    {
-        int defenceScore = DefenceDice.Throw();
-
-        return defenceScore;
-    }
-
 }
