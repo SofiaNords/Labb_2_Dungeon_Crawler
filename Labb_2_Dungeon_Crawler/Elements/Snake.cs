@@ -1,9 +1,8 @@
 ﻿public class Snake : Enemy
 {
     private LevelData _levelData;
-    private Player _player;
 
-    public Snake(int x, int y, LevelData levelData, Player player)
+    public Snake(int x, int y, LevelData levelData)
     {
         ClassChar = 's';
         Color = ConsoleColor.Green;
@@ -12,13 +11,14 @@
         Name = "Snake";
         HP = 25;
         _levelData = levelData;
-        _player = player;
+        AttackDice = new Dice(3, 4, 2);
+        DefenceDice = new Dice(1, 8, 5);
     }
 
-    public override void Update()
+    public override void Update(Player player)
     {
-        int playerPositionX = _player.PositionX;
-        int playerPositionY = _player.PositionY;
+        int playerPositionX = player.PositionX;
+        int playerPositionY = player.PositionY;
 
         int distanceX = Math.Abs(PositionX - playerPositionX);
         int distanceY = Math.Abs(PositionY - playerPositionY);
@@ -47,22 +47,10 @@
             }
         }
 
-        if (IsValidMove(newX, newY))
+        if (player.IsValidMove(newX, newY, _levelData))
         {
             PositionX = newX;
             PositionY = newY;
         }
-    }
-
-    private bool IsValidMove(int x, int y)
-    {
-        foreach (var element in _levelData.Elements)
-        {
-            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Enemy || element is Player))
-            {
-                return false;
-            }
-        }
-        return true;
     }
 }
