@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-public abstract class Enemy : LevelElement
+﻿public abstract class Enemy : LevelElement 
 {
     public virtual string Name { get; set; }
 
@@ -10,6 +8,6 @@ public abstract class Enemy : LevelElement
 
     public Dice DefenceDice { get; set; }
 
-    public abstract void Update();
-  
+    public abstract void Update(Player player);
+
 }
