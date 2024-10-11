@@ -76,3 +76,15 @@ The Rat moves 1 step in a randomly chosen direction (up, down, left, or right) e
 
 The Snake stays still if the player is more than 2 spaces away; otherwise, it moves away from the player.
 
+## My Solution
+
+My solution reflects the task in many ways with a few exceptions.
+
+### Exceptions
+
+### Draw method with parameter
+
+*"It should also have a public Draw method (without parameters), which we can call to render a LevelElement with the correct color and character at the correct location."*
+
+In my Vision Range solution I chose to place the methods for checking if an object is within the player's line of sight, as well as the method for calculating the distance to another object, in my Player class. In order to perform the check for whether an element is within the player's field of view, I pass the player as an argument to the Draw method in the LevelElement class.
+

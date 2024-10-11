@@ -57,6 +57,21 @@ public class Player : LevelElement
         return (newX, newY);  // Returnera den nya positionen som en tuple (newX, newY)
     }
 
+
+    // Metod för att kontrollera om en rörelse är giltig (inte kolliderar med väggar eller fiender)
+    public bool IsValidMove(int x, int y, LevelData levelData)
+    {
+        foreach (var element in levelData.Elements)
+        {
+            // Om det finns en vägg eller fiende på den nya positionen, är rörelsen ogiltig
+            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Enemy))
+            {
+                return false;
+            }
+        }
+        return true;  // Om ingen kollision finns, är rörelsen giltig
+    }
+
     // Metod som kollar om ett objekt är inom spelarens synradie
     public bool IsWithinVisionRange(LevelElement element)
     {
@@ -127,19 +142,5 @@ public class Player : LevelElement
         }
 
         Console.ResetColor();
-    }
-
-    // Metod för att kontrollera om en rörelse är giltig (inte kolliderar med väggar eller fiender)
-    public bool IsValidMove(int x, int y, LevelData levelData)
-    {
-        foreach (var element in levelData.Elements)
-        {
-            // Om det finns en vägg eller fiende på den nya positionen, är rörelsen ogiltig
-            if (element.PositionX == x && element.PositionY == y && (element is Wall || element is Enemy))
-            {
-                return false;
-            }
-        }
-        return true;  // Om ingen kollision finns, är rörelsen giltig
     }
 }
