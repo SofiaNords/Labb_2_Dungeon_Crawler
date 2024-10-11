@@ -11,7 +11,7 @@ public class GameLoop
     // Objekt som hanterar attacklogik
     private Attack _attack;
 
-    // Objekt som hanterar all speldata (t.ex. poäng, status)
+    // Objekt som hanterar speldata (t.ex. poäng, status)
     private GameData _gamedata;
 
     // Konstruktorn initialiserar nivådata, attack och speldatan
@@ -64,6 +64,8 @@ public class GameLoop
                     }
                     else
                     {
+                        // Ta bort döda fiender från listan
+                        RemoveDeadEnemies();
                         // Visa att fienden dog på skärmen
                         Console.SetCursorPosition(0, 26);
                         Console.Write(new string(' ', Console.WindowWidth)); // Rensa tidigare meddelanden
@@ -87,9 +89,6 @@ public class GameLoop
                         enemy.Update(player);
                     }
                 }
-
-                // Ta bort döda fiender från listan
-                RemoveDeadEnemies();
 
                 turn++; // Öka turen
                 DrawLevel(player); // Rita om spelets nivå
