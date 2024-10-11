@@ -2,94 +2,92 @@
 
 public class LevelData
 {
-    // List to store the elements that make up the level
+    // Lista för att lagra alla element som utgör nivåns objekt
     private List<LevelElement> _elements;
 
-    // Property to get the starting player of the level, Borde vara en Position PlayerStartPosition
-    public Player StartPlayer { get; private set; }
+    // Egenskap för att hämta spelarens startposition på nivån
+    public Player PlayerStartPosition { get; private set; }
 
-    public Rat Rat { get; set; }
+    // Egenskap för att hålla referens till en fiende, kan vara en enda fiende för nu
+    public Enemy Enemy { get; set; }
 
-    // Public access to the elements list, allowing read-only access while keeping the list itself private
+    // Offentlig egenskap för att få tillgång till listan av element, men hålla själva listan privat
     public List<LevelElement> Elements
     {
         get { return _elements; }
     }
 
-    // Constructor to initialize the level elements list
-    public LevelData()  
+    // Konstruktor för att initialisera listan av nivåelement
+    public LevelData()
     {
-        _elements = new List<LevelElement>();
+        _elements = new List<LevelElement>(); // Skapa en ny lista för element på nivån
     }
 
-    // Method to load level data from a specified file
+    // Metod för att läsa in nivådata från en specifik fil
     public void Load(string fileName)
     {
-        // Construct the file path to locate the level file
+        // Skapa sökvägen till nivåfilen
         string filePath = Path.Combine("Levels", fileName);
 
         try
         {
-            // Use StreamReader to read the level file content
+            // Använd StreamReader för att läsa innehållet i nivåfilen
             using (StreamReader reader = new StreamReader(filePath))
             {
                 int character;
-                int positionX = 0; // Tracks the horizontal position in the level
-                int positionY = 0; // Tracks the vertical position in the level
-                bool playerCreated = false;
+                int positionX = 0; // Håller koll på den horisontella positionen i nivån
+                int positionY = 0; // Håller koll på den vertikala positionen i nivån
 
-                // Read characters from the file until the end is reached
+                // Läs varje tecken i filen tills slutet av filen
                 while ((character = reader.Read()) != -1)
                 {
-                    char c = (char)character; // Cast the integer character to char type
+                    char c = (char)character; // Konvertera det lästa tecknet till en char
 
-                    LevelElement element = null; // Variable to hold the level element being created
+                    LevelElement element = null; // Variabel för att hålla det element som skapas
 
-                    // Determine the type of level element to create based on the character read
+                    // Bestäm vilken typ av element som ska skapas baserat på det lästa tecknet
                     switch (c)
                     {
-                        case '#':
-                            element = new Wall(positionX, positionY); // Create a wall element
+                        case '#': // Väggelement
+                            element = new Wall(positionX, positionY);
                             break;
-                        case 'r':
-                            element = new Rat(positionX, positionY, this); // Create a rat element
-                            Rat = (Rat)element;
+                        case 'r': // Rattelement
+                            element = new Rat(positionX, positionY, this);
                             break;
-                        case 's':
-                            element = new Snake(positionX, positionY, this); // Create a snake element
+                        case 's': // Ormelement
+                            element = new Snake(positionX, positionY, this);
                             break;
-                        case '@':
-                            element = new Player(positionX, positionY); // Create a player element
-                            StartPlayer = (Player)element; // Set the starting player
-                            playerCreated = true;
+                        case '@': // Spelarelement
+                            element = new Player(positionX, positionY);
+                            PlayerStartPosition = (Player)element; // Sätt spelarens startposition
                             break;
                         default:
-                            element = null; // Ignore unrecognized characters
+                            element = null; // Ignorera okända tecken
                             break;
                     }
 
-                    // Add the created element to the list if it is valid
+                    // Om ett giltigt element har skapats, lägg till det i listan
                     if (element != null)
                     {
                         _elements.Add(element);
                     }
 
-                    // Increment the x position for the next character
+                    // Öka x-positionen för nästa tecken
                     positionX++;
 
-                    // If a newline character is encountered, reset x position and increment y position
+                    // Om ett radbrytningstecken ('\n') läses, öka y-positionen och återställ x-positionen
                     if (c == '\n')
                     {
                         positionY++;
-                        positionX = 0; // Reset to the start of the next line
+                        positionX = 0; // Återställ till startpositionen för nästa rad
                     }
                 }
             }
         }
         catch (IOException e)
         {
-            // Handle potential file I/O errors
-            Console.WriteLine("An error occurred while loading the level:");
+            // Hantera potentiella fel vid filinläsning
+            Console.WriteLine("Ett fel uppstod när nivån skulle läsas in:");
             Console.WriteLine(e.Message);
         }
     }
