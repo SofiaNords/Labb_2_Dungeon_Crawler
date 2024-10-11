@@ -1,78 +1,78 @@
 # Lab 2 - Dungeon Crawler
 
+This is my second assignment in the course Programming with C# in the .NET Developer program at IT-högskolan in Gothenburg. The task was to create a console application game called Dungeon Crawler. A dungeon crawler is a type of role-playing game where players explore labyrinthine areas, known as dungeons, where they fight enemies and search for treasures. In this lab, we will build a somewhat simplified version of such a game in the form of a console application.
+
+The roguelike genre often relies on procedural generation, which is a method for generating random levels using algorithms. Since the focus of this lab is object-oriented programming, I have decided to omit this part and instead provide you with a pre-made level in the form of a text file. (Download Level1.txt, at the bottom of the page.)
+
+The file represents a "dungeon" with two types of monsters ("rats" and "snakes") placed within it, and it also includes a predefined starting position for the player. Your task will be to write code that reads the file and divides it into different objects (walls, player, and enemies) in C#, where each object independently tracks its own data (e.g., position, color, health) and methods (e.g., for moving or attacking).
+   
+
 ## The Task
 
 ### Lab 2 - Dungeon Crawler
 
-En dungeon crawler är en typ av rollspel som involverar att spelare utforskar labyrintiska områden, så kallade dungeons, där de slåss mot fiender och letar efter skatter. I denna labb bygger vi en, något förenklad, version av ett sådant spel i form av en konsolapplikation.
+#### Class Hierarchy of Level Elements
 
-Spelgenren roguelike bygger oftast på så kallad procedural generation, som är en metod för ta fram slumpmässiga banor med hjälp av algoritmer. Eftersom fokus på denna labb ska vara objektorienterad programmering, så har jag valt bort den delen och istället skapat en färdig bana som ni får i form av en textfil. (Ladda ner Level1.txt, längst ner på sidan.)
+In addition to the player, there are 3 different types of objects in our "dungeon": "Wall", "Rat", and "Snake". We want to use inheritance to reuse as much code as possible for functionality that is shared between multiple types of objects.
 
-Filen representerar en “dungeon” med två olika sorters monster (“rats” & “snakes”) utplacerade, och har även en fördefinierad startposition för spelaren. Din uppgift blir att skriva kod som läser in filen och delar in i olika objekt (väggar, spelare och fiender) i C# som fristående från varandra håller reda på sina egna data (t.ex. position, färg, hälsa) och metoder (t.ex för att förflytta sig, eller attackera).
+There should be an abstract base class, which I’ve chosen to call "LevelElement". Since it is abstract, you cannot create instances of it; instead, it is used to define base functionality that other classes can inherit. LevelElement should have properties for (X,Y) position, a char that stores which character a class is drawn with (e.g., "Wall" will use the # symbol), and a ConsoleColor to store the color the character should be drawn in. It should also have a public Draw method (without parameters), which we can call to render a LevelElement with the correct color and character at the correct location.
 
-## Klasshierarki av Level Elements
+The Wall class inherits from LevelElement, and really doesn’t need any additional code, except for hardcoding the color and symbol for a wall (a gray hashtag).
 
-Förutom själva spelaren finns det 3 olika sorters objekt i vår “dungeon”: “Wall”, “Rat”, och “Snake”. Vi vill använda arv för att återanvända så mycket kod som möjligt för den funktionalitet som delas av flera typer av objekt.
+The Enemy class also inherits from LevelElement, and adds functionality specific to enemies. Enemy is abstract as well, because we don’t want to instantiate generic “enemies”. All real enemies (in the lab, Rat and Snake, but you can add more types if you want and have time) inherit from this class. Enemy should have properties for name (e.g., snake/rat), health (HP), and AttackDice and DefenceDice, which are of type Dice (more on this below). It should also have an abstract Update method, which is not implemented in this class, but requires that all subclasses implement it. We want to be able to call the Update method on all enemies, and then each subclass will handle how they update (for example, different movement patterns).
 
-Det ska finns en abstrakt basklass som jag valt att kalla “LevelElement”. Eftersom den är abstrakt så kan man inte ha instanser av denna, utan den används för att definiera basfunktionalitet som andra klasser sedan kan ärva. LevelElement ska ha properties för (X,Y)-position, en char som lagrar vilket tecken en klass ritas ut med (t.ex. kommer “Wall” använda #-tecknet), samt en ConsoleColor som lagrar vilken färg tecknet ska ritas med. Den ska dessutom ha en publik Draw-metod (utan parametrar), som vi kan anropa för att rita ut ett LevelElement med rätt färg och tecken på rätt plats.
+Finally, we have the Rat and Snake classes, which initialize their inherited properties with the unique attributes of each enemy and also implement the Update method in their own unique ways.
 
-Klassen “Wall” ärver av LevelElement, och behöver egentligen ingen egen kod förutom att hårdkoda färgen och tecknet för vägg (en grå hashtag).
+#### Loading Level Design from File
 
-Klassen “Enemy” ärver också av LevelElement, och lägger till funktionalitet som är specifik för fiender. Även Enemy är abstrakt, då vi inte vill att man ska kunna instansiera ospecifika “fiender”. Alla riktiga fiender (i labben rat & snake, men om man vill och har tid får man lägga till fler typer av fiender) ärver av denna klass. Enemy ska ha properties för namn (t.ex snake/rat), hälsa (HP), samt AttackDice och DefenceDice av typen Dice (mer om detta längre ner). Den ska även ha en abstrakt Update-metod, som alltså inte implementeras i denna klass, men som kräver att alla som ärver av klassen implementerar den. Vi vill alltså kunna anropa Update-metoden på alla fiender och sedan sköter de olika subklasserna hur de uppdateras (till exempel olika förflyttningsmönster).
+Create a class called LevelData that has a private field elements of type List<LevelElement>. This field should also be exposed via a public readonly property called Elements.
 
-Slutligen har vi klasserna “Rat” och “Snake” som initialiserar sina nedärvda properties med de unika egenskaper som respektive fiende har, samt även implementerar Update-metoden på sina egna unika sätt.
+Additionally, LevelData should have a method called Load(string filename), which loads data from the file provided as an argument. The Load method reads through the text file character by character, and for each character it finds that is either #, r, or s, it creates a new instance of the class corresponding to that character and adds a reference to that instance to the elements list.
 
-## Läsa in bandesign från fil
+Keep in mind that when the instance is created, it must also receive an (X/Y) position, meaning that Load needs to keep track of the current row and column in the file where the character was found. It should also store the player's starting position when it encounters @.
 
-Skapa en klass “LevelData” som har en private field “elements” av typ List<LevelElement>. Denna ska även exponeras i form av en public readonly property “Elements”.
+Once the file is loaded, there should be an object in elements for every character in the file (excluding spaces and line breaks), and a simple foreach loop that calls .Draw() on each element in the list should now render the entire level on the screen.
 
-Vidare har LevelData en metod, Load(string filename), som läser in data från filen man anger vid anrop. Load läser igenom textfilen tecken för tecken, och för varje tecken den hittar som är någon av #, r, eller s, så skapar den en ny instans av den klass som motsvarar tecknet och lägger till en referens till instansen på “elements”-listan. Tänk på att när instansen skapas så måste den även få en (X/Y) position; d.v.s Load behöver alltså hålla reda på vilken rad och kolumn i filen som tecknet hittades på. Den behöver även spara undan startpositionen för spelaren när den stöter på @.
+#### Game Loop
 
-När filen är inläst bör det alltså finnas ett objekt i “elements” för varje tecken i filen (exkluderat space/radbyte), och en enkel foreach-loop som anropar .Draw() för varje element i listan bör nu rita upp hela banan på skärmen.
+A game loop is a loop that runs repeatedly while the game is active, and in our case, each iteration of the loop will correspond to one round of the game. For each iteration of the loop, we will wait for the user to press a key; then, we perform the player's move, followed by the computer's move (updating all enemies), before looping again. Optionally, we could have a key (such as Esc) to exit the loop/terminate the game.
 
-## Game Loop
+When the player or enemies move, we need to calculate their new position and then check through all LevelElements to see if there is any other object at the location they are trying to move to. If there is a wall or another object (enemy/player) at that location, the movement must be canceled, and the previous position remains. However, note that if the player moves to a location where there is an enemy, they will attack that enemy (more on this later). The same applies if an enemy moves to the player's location. Enemies cannot, however, attack each other in the game.
 
-En game loop är en loop som körs om och om igen medan spelet är igång, och i vårat fall kommer ett varv i loopen motsvaras av en omgång i spelet. För varje varv i loopen inväntar vi att användaren trycker in en knapp; sedan utför vi spelarens drag, följt av datorns drag (uppdatera alla fiender), innan vi loopar igen. Möjligtvis kan man ha en knapp (Esc) för att avsluta loopen/spelet.
+#### Vision range
 
-När spelaren/fiender flyttar på sig behöver vi beräkna deras nya position och leta igenom alla vår LevelElements för att se om det finns något annat objekt på den platsen man försöker flytta till. Om det finns en vägg eller annat objekt (fiende/spelaren) på platsen måste förflyttningen avbrytas och den tidigare positionen gälla. Notera dock att om spelaren flyttar sig till en plats där det står en fiende så attackerar han denna (mer om detta längre ner). Detsamma gäller om en fiende flyttar sig till platsen där spelaren står. Fiender kan dock inte attackera varandra i spelet.
+To create a sense of exploration in the game, we limit the player's field of view to only show objects within a radius of 5 characters (but you can also experiment with different radii). However, walls will never disappear once they have been seen, but enemies will not be visible once they move outside of the radius.
 
-## Vision range
+The distance between two points in 2D can be easily calculated using the Pythagorean theorem.
 
-För att få en effekt av “utforskande” i spelet begränsar vi spelarens synfält till att bara visa objekt inom en radie av 5 tecken (men ni kan också prova med andra radier); Väggarna försvinner dock aldrig när man väl sett dem, men fienderna syns inte så fort de kommer utanför radien.
+#### Rolling Dice
 
-Avståndet mellan två punkter i 2D kan enkelt beräknas med hjälp av pythagoras sats.
+The game uses simulated dice rolls to determine how much damage the player and enemies inflict on each other.
 
-## Kasta tärningar
+Create a class called Dice with a constructor that takes 3 parameters: numberOfDice, sidesPerDice, and Modifier. By creating new instances of this class, you will be able to create different sets of dice, e.g., “3d6+2”, meaning rolling 3 six-sided dice, adding the results together, and then adding 2 to get the total score.
 
-Spelet använder sig av simulerade tärningskast för att avgöra hur mycket skada spelaren och fienderna gör på varandra.
+Dice objects should have a public Throw() method that returns an integer representing the score obtained when rolling the dice according to the object’s configuration. Each call to Throw() should represent a new roll of the dice.
 
-Skapa en klass “Dice” med en konstruktor som tar 3 parametrar: numberOfDice, sidesPerDice och Modifier. Genom att skapa nya instans av denna kommer man kunna skapa olika uppsättningar av tärningar t.ex “3d6+2”, d.v.s slag med 3 stycken 6-sidiga tärningar, där man tar resultatet och sedan plussar på 2, för att få en total poäng.
+Also, override the Dice.ToString() method so that when you print a Dice object, it returns a string that describes the object’s configuration, e.g., “3d6+2”.
 
-Dice-objekt ska ha en publik Throw() metod som returnerar ett heltal med den poäng man får när man slår med tärningarna enligt objektets konfiguration. Varje anrop motsvarar alltså ett nytt kast med tärningarna.
+#### Attack and Defense
 
-Gör även en override av Dice.ToString(), så att man när man skriver ut ett Dice-objekt får en sträng som beskriver objektets konfiguration. t.ex: “3d6+2”.
+When a player attacks (or enters into combat with) an enemy, or vice versa, we need to simulate dice rolls to get a score that determines how much damage the attack inflicts. The attacker rolls their dice first and gets an attack score. Then, the defender rolls their dice and gets a defense score. Subtract the defense score from the attack score, and if the difference is greater than 0, subtract that amount from the defender’s HP (health points). After one or more attacks, the HP reaches 0, causing the enemy to die (or the player to get a game over).
 
-## Attack och försvar
+If the defender survives, they immediately perform a counterattack, meaning they roll dice again to get an attack score, and the attacker now defends by rolling their dice. Subtract HP according to the rules above.
 
-När en spelare attackerar (går in i) en fiende, eller tvärtom så behöver vi simulera tärningskast för att få en poäng som avgör hur mycket skada attacken gör. Den som attackerar kastar då sina tärningar först och får en attackpoäng. Sedan kastar den som försvarar sina tärningar och får en försvarspoäng. Ta sedan attackpoängen minus försvarspoängen, och om differensen är större än 0, dra motsvarande antal från förvararens HP (hälsopoäng). Efter en eller flera attacker kommer HP ner till 0, varpå fienden dör (eller spelaren får game over).
-
-Om försvararen överlever kommer han direkt att göra en motattack, d.v.s kasta tärningar på nytt för att få en attackpoäng; varpå den som först attackerade nu försvarar genom att kasta sina tärningar. Dra bort HP enligt reglerna ovan.
-
- Spelaren samt alla typer av fiender har en uppsättning tärningskonfigurationer för sin attack respektive försvar, samt en hårdkodad HP som man startar med. Jag har använt följande konfigurationer, men ni får gärna prova med andra:
+The player and all types of enemies have a set of dice configurations for their attack and defense, as well as a hardcoded HP to start with. I've used the following configurations, but feel free to try others:
 
 Player: HP = 100, Attack = 2d6+2, Defence = 2d6+0
-
 Rat: HP = 10, Attack = 1d6+3, Defence = 1d6+1
+Snake: HP = 25, Attack = 3d4+2, Defence = 1d8+5
 
-Snake: HP = 25, Attack = 3d4+2, Defence = 1d8+5 
 
-## Förflyttningsmönster
+#### Movement Patterns
 
-Spelaren förflyttar sig 1 steg upp, ner, höger eller vänster varje omgång, alternativt står still, beroende på vilken knapp användaren tryckt på.
+The player moves 1 step up, down, left, or right each round, or stays still, depending on which key the user presses.
 
-Rat förflyttar sig 1 steg i slumpmässig vald riktning (upp, ner, höger eller vänster) varje omgång.
+The Rat moves 1 step in a randomly chosen direction (up, down, left, or right) each round.
 
-Snake står still om spelaren är mer än 2 rutor bort, annars förflyttar den sig bort från spelaren.
-
-Varken spelare, rats eller snakes kan gå igenom väggar eller varandra.
+The Snake stays still if the player is more than 2 spaces away; otherwise, it moves away from the player.
 
